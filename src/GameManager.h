@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <thread>
+#include <stdexcept>
 #include "Game.h"
 #include "gfx/Renderer.h"
 #include "gfx/TerminalRenderer.h"

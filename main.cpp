@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
     if (argc==1) {
         std::cout << "Error: Missing required arguments" << std::endl;
-        return 0;
+        return 1;
     }
 
     std::cout << argv[0] << std::endl;
@@ -45,8 +45,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    auto *gameManager = new GameManager(size, random, filePath, withGfx);
-    gameManager->start();
+    try {
+        auto *gameManager = new GameManager(size, random, filePath, withGfx);
+        gameManager->start();
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }

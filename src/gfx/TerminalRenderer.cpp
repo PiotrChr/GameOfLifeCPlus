@@ -5,6 +5,10 @@
 #include "TerminalRenderer.h"
 #include <iostream>
 
+int TerminalRenderer::init() {
+    return 0;
+}
+
 void TerminalRenderer::renderState(const std::vector<std::vector<bool>>& state) {
     system("clear");
     std::cout << "\n";

@@ -9,6 +9,7 @@
 class Renderer {
 public:
     virtual void renderState(const std::vector<std::vector<bool>>& state) = 0;
+    virtual int init() = 0;
 };
 
 

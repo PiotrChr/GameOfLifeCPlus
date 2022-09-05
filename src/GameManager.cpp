@@ -17,6 +17,12 @@ GameManager::GameManager(unsigned int _size, bool random, const std::string& fil
         renderer = new TerminalRenderer();
     }
 
+    try {
+        renderer->init();
+    } catch (std::exception& e) {
+        throw std::runtime_error("Failed to initialize renderer: " + std::string(e.what()));
+    }
+
     game = new Game(size, initialGameState);
 }
 
@@ -26,12 +32,12 @@ void GameManager::start() {
     renderer->renderState(game->getState());
     std::this_thread::sleep_for(std::chrono::milliseconds(DEFAULT_DELAY));
 
-    while(true) {
-        game->update();
-        renderer->renderState(game->getState());
-        std::this_thread::sleep_for(std::chrono::milliseconds(DEFAULT_DELAY));
-
-    }
+//    while(true) {
+//        game->update();
+//        renderer->renderState(game->getState());
+//        std::this_thread::sleep_for(std::chrono::milliseconds(DEFAULT_DELAY));
+//
+//    }
 }
 
 void GameManager::generate_random(std::vector<std::vector<bool>> &initialGameState) {

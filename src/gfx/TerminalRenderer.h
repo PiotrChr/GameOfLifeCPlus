@@ -12,6 +12,7 @@
 class TerminalRenderer: public Renderer {
 public:
     void renderState(const std::vector<std::vector<bool>>& state) override;
+    int init() override;
 };
 
 
