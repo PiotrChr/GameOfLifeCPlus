@@ -37,6 +37,7 @@ private:
     cell newCell(unsigned int x, unsigned int y);
     static std::tuple<VAO, VBO> makeVao(GLfloat* vertices, size_t vert_size);
     Game* game;
+    static void initOpenGL();
 public:
     OpenGLRenderer(unsigned int resolution, Game* game);
     ~OpenGLRenderer();
