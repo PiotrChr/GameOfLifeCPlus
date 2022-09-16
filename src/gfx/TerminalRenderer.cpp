@@ -5,11 +5,19 @@
 #include "TerminalRenderer.h"
 #include <iostream>
 
-int TerminalRenderer::init() {
-    return 0;
+TerminalRenderer::TerminalRenderer(Game* _game) {
+    game = _game;
 }
 
-void TerminalRenderer::renderState(const std::vector<std::vector<bool>>& state) {
+int TerminalRenderer::init(unsigned int _size) {
+    renderState(game->getState());
+
+    while(true) {
+        renderState(game->getState());
+    }
+}
+
+void TerminalRenderer::renderState(std::vector<std::vector<bool>> state) {
     system("clear");
     std::cout << "\n";
 

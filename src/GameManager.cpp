@@ -3,41 +3,31 @@
 //
 #include "GameManager.h"
 
-GameManager::GameManager(unsigned int _size, bool random, const std::string& filePath, bool withGfx) {
+GameManager::GameManager(unsigned int _size, bool random, const std::string& filePath, bool withGfx, unsigned int resolution) {
     size = _size;
+
     std::vector<std::vector<bool>> initialGameState;
 
     if (random) {
         generate_random(initialGameState);
     }
 
-    if (withGfx) {
-        renderer = new OpenGLRenderer();
-    } else {
-        renderer = new TerminalRenderer();
-    }
-
-    try {
-        renderer->init();
-    } catch (std::exception& e) {
-        throw std::runtime_error("Failed to initialize renderer: " + std::string(e.what()));
-    }
-
     game = new Game(size, initialGameState);
+
+    if (withGfx) {
+        renderer = new OpenGLRenderer(resolution, game);
+    } else {
+        renderer = new TerminalRenderer(game);
+    }
+
 }
 
 void GameManager::start() {
-    std::cout << "Starting Game with size: " << size << std::endl;
-
-    renderer->renderState(game->getState());
-    std::this_thread::sleep_for(std::chrono::milliseconds(DEFAULT_DELAY));
-
-//    while(true) {
-//        game->update();
-//        renderer->renderState(game->getState());
-//        std::this_thread::sleep_for(std::chrono::milliseconds(DEFAULT_DELAY));
-//
-//    }
+    try {
+        renderer->init(size);
+    } catch (std::exception& e) {
+        throw std::runtime_error("Failed to initialize renderer: " + std::string(e.what()));
+    }
 }
 
 void GameManager::generate_random(std::vector<std::vector<bool>> &initialGameState) {

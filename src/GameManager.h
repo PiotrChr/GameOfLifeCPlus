@@ -24,7 +24,7 @@ private:
     Game *game;
     Renderer *renderer;
 public:
-    GameManager(unsigned int _size, bool _random, const std::string& _filePath, bool withGfx);
+    GameManager(unsigned int _size, bool _random, const std::string& _filePath, bool withGfx, unsigned int resolution);
     void start();
     void generate_random(std::vector<std::vector<bool>> &initialGameState);
 };

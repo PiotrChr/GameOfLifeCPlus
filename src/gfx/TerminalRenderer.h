@@ -4,15 +4,19 @@
 
 #include <vector>
 #include "Renderer.h"
+#include "../Game.h"
 
 #ifndef GAMEOFLIFECPLUS_TERMINALRENDERER_H
 #define GAMEOFLIFECPLUS_TERMINALRENDERER_H
 
 
 class TerminalRenderer: public Renderer {
+private:
+    Game* game;
 public:
-    void renderState(const std::vector<std::vector<bool>>& state) override;
-    int init() override;
+    TerminalRenderer(Game* game);
+    void renderState(std::vector<std::vector<bool>> state) override;
+    int init(unsigned int _size) override;
 };
 
 
