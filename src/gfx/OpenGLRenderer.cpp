@@ -38,8 +38,9 @@ void OpenGLRenderer::initOpenGL() {
 
 int OpenGLRenderer::init(unsigned int _size) {
     size = _size;
-    cellSize = 1.0f / float(size);
-
+    cellSize = 2.0f / float(size);
+    GLsizei width;
+    GLsizei height;
     // Initialize GLFW
     initOpenGL();
 
@@ -50,13 +51,13 @@ int OpenGLRenderer::init(unsigned int _size) {
         glfwTerminate();
         throw std::runtime_error("Failed to crate a window");
     }
-
+    glfwGetFramebufferSize(window, &width, &height);
     // Introduce the window into the current context
     glfwMakeContextCurrent(window);
     //Load GLAD so it configures OpenGL
     gladLoadGL();
     // Specify the viewport of OpenGL in the Window
-    glViewport(0, 0, resolution, resolution);
+    glViewport(0, 0, width, height);
 
     grid = prepareGrid();
 
@@ -74,15 +75,18 @@ int OpenGLRenderer::init(unsigned int _size) {
         // Tell OpenGL which Shader Program we want to use
 
         // Draw all the living cells
-//        for (unsigned int col=0; col<size; col++) {
-//            for (unsigned int row=0; row<size; row++) {
-//                if (state[col][row]) {
-//                    grid[col][row].draw();
-//                }
-//            }
-//        }
+        for (unsigned int col=0; col<size; col++) {
+            for (unsigned int row=0; row<size; row++) {
+                if (state[col][row]) {
+                    grid[col][row]->draw();
+                }
+            }
+        }
 
-        grid[2][2].draw();
+//        grid[size-1][size-1]->draw();
+//
+//        grid[size-1][size-3]->draw();
+
         // Take care of all GLFW events
         glfwPollEvents();
         // Swap the back buffer with the front buffer
@@ -91,8 +95,8 @@ int OpenGLRenderer::init(unsigned int _size) {
 
     for (unsigned int col=0; col<size; col++) {
         for (unsigned int row=0; row<size; row++) {
-            grid[col][row].vao.destroy();
-            grid[col][row].vbo.destroy();
+            grid[col][row]->vao->destroy();
+            grid[col][row]->vbo->destroy();
         }
     }
 
@@ -102,23 +106,25 @@ int OpenGLRenderer::init(unsigned int _size) {
     return 0;
 }
 
-std::tuple<VAO, VBO> OpenGLRenderer::makeVao(GLfloat* vertices, size_t vert_size) {
-    // Generates Vertex Array Object and binds it
-    VAO VAO1;
-    VAO1.bind();
-
+std::tuple<VAO*, VBO*> OpenGLRenderer::makeVao(GLfloat* vertices, size_t vert_size) {
     // Generates Vertex Buffer Object and links it to vertices
-    VBO VBO1(vertices, vert_size);
-    // Links VBO to VAO
-    VAO1.linkVBO(VBO1, 0);
+    VBO* VBO1 = new VBO(vertices, vert_size);
 
-    VAO1.unbind();
-    VBO1.unbind();
+    // Links VBO to VAO
+
+    // Generates Vertex Array Object and binds it
+    VAO* VAO1 = new VAO;
+    VAO1->bind();
+
+    VAO1->linkVBO(VBO1, 0);
+
+    VAO1->unbind();
+    VBO1->unbind();
 
     return {VAO1, VBO1};
 }
 
-cell OpenGLRenderer::newCell(unsigned int y, unsigned int x) {
+Cell* OpenGLRenderer::newCell(unsigned int x, unsigned int y) {
     GLfloat vertices[18];
     std::copy(std::begin(box), std::end(box), std::begin(vertices));
 
@@ -134,22 +140,24 @@ cell OpenGLRenderer::newCell(unsigned int y, unsigned int x) {
         }
 
         if (vertices[i] < 0) {
-            vertices[i] = _position * 2.f - 1.f;
+            _position = _position - 1.f;
         } else {
-            vertices[i] = (_position + cellSize) * 2.f - 1.f;
+            _position = (_position + cellSize) - 1.f;
         }
+
+        vertices[i] = _position;
     }
 
     auto [vao, vbo] = makeVao(vertices, sizeof(vertices));
 
-    return cell { vao, vbo, x, y };
+    return new Cell(vao, vbo, x, y);
 }
 
-std::vector<std::vector<cell>> OpenGLRenderer::prepareGrid() {
+std::vector<std::vector<Cell*>> OpenGLRenderer::prepareGrid() {
     for (unsigned int row=0; row<size; row++) {
-        std::vector<cell> grid_row;
+        std::vector<Cell*> grid_row;
         for (unsigned int col=0; col<size; col++) {
-            cell new_cell = newCell(row, col);
+            Cell* new_cell = newCell(col, row);
             grid_row.push_back(new_cell);
         }
         grid.push_back(grid_row);
@@ -168,7 +176,14 @@ void OpenGLRenderer::renderState(std::vector<std::vector<bool>> _state) {
     state = _state;
 }
 
-void cell::draw() {
-    vao.bind();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+Cell::Cell(VAO* _vao, VBO* _vbo, unsigned int _x, unsigned int _y) {
+    vao = _vao;
+    vbo = _vbo;
+    x = _x;
+    y = _y;
+}
+
+void Cell::draw() {
+    vao->bind();
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }

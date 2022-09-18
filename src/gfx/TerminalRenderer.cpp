@@ -13,6 +13,7 @@ int TerminalRenderer::init(unsigned int _size) {
     renderState(game->getState());
 
     while(true) {
+        game->update();
         renderState(game->getState());
     }
 }

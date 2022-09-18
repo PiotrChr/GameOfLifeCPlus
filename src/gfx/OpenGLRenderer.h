@@ -17,9 +17,11 @@
 #ifndef GAMEOFLIFECPLUS_OPENGLRENDERER_H
 #define GAMEOFLIFECPLUS_OPENGLRENDERER_H
 
-struct cell {
-    VAO vao;
-    VBO vbo;
+class Cell {
+public:
+    Cell(VAO* vao, VBO* vbo, unsigned int x, unsigned int y);
+    VAO* vao;
+    VBO* vbo;
     unsigned int x;
     unsigned int y;
     void draw();
@@ -31,11 +33,11 @@ private:
     unsigned int size;
     unsigned int resolution;
     float cellSize;
-    std::vector<std::vector<cell>> grid;
+    std::vector<std::vector<Cell*>> grid;
     std::vector<std::vector<bool>> state;
-    std::vector<std::vector<cell>> prepareGrid();
-    cell newCell(unsigned int x, unsigned int y);
-    static std::tuple<VAO, VBO> makeVao(GLfloat* vertices, size_t vert_size);
+    std::vector<std::vector<Cell*>> prepareGrid();
+    Cell* newCell(unsigned int x, unsigned int y);
+    static std::tuple<VAO*, VBO*> makeVao(GLfloat* vertices, size_t vert_size);
     Game* game;
     static void initOpenGL();
 public:

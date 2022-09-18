@@ -12,7 +12,7 @@
 #include "gfx/TerminalRenderer.h"
 #include "gfx/OpenGLRenderer.h"
 
-#define DENSITY 50
+#define DENSITY 20
 #define DEFAULT_DELAY 50
 
 #ifndef GAMEOFLIFECPLUS_GAMEMANAGER_H
