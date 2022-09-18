@@ -4,9 +4,9 @@
 
 
 const std::string commands[5] = {
-        "-size",
+        "--size",
         "-random",
-        "-file",
+        "--file",
         "-gfx",
         "--res"
 };
