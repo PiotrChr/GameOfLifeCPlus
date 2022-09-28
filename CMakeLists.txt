@@ -5,10 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(OpenGL REQUIRED)
 
 include_directories("includes")
 
-add_executable(GameOfLifeCplus main.cpp src/Game.cpp src/Game.h src/GameManager.cpp src/GameManager.h src/gfx/TerminalRenderer.cpp src/gfx/TerminalRenderer.h src/gfx/OpenGLRenderer.cpp src/gfx/OpenGLRenderer.h src/dot.h src/gfx/Renderer.h libs/glad.c src/gfx/shader/Shader.cpp src/gfx/shader/Shader.h src/gfx/VBO.cpp src/gfx/VBO.h src/gfx/EBO.cpp src/gfx/EBO.h src/gfx/VAO.cpp src/gfx/VAO.h resources/shaders/default.frag resources/shaders/default.vert)
+add_executable(GameOfLifeCplus main.cpp src/Game.cpp src/Game.h src/GameManager.cpp src/GameManager.h src/gfx/renderer/TerminalRenderer.cpp src/gfx/renderer/TerminalRenderer.h src/gfx/renderer/OpenGLRenderer.cpp src/gfx/renderer/OpenGLRenderer.h src/dot.h src/gfx/renderer/Renderer.h libs/glad.c src/gfx/shader/Shader.cpp src/gfx/shader/Shader.h src/gfx/engine/VBO.cpp src/gfx/engine/VBO.h src/gfx/engine/EBO.cpp src/gfx/engine/EBO.h src/gfx/engine/VAO.cpp src/gfx/engine/VAO.h resources/shaders/default.frag resources/shaders/default.vert src/gfx/renderer/OpenGLShaderRenderer.cpp src/gfx/renderer/OpenGLShaderRenderer.h src/gfx/engine/EngineManager.cpp src/gfx/engine/EngineManager.h)
 
 target_link_libraries(GameOfLifeCplus glfw)
 target_link_libraries(GameOfLifeCplus OpenGL::GL)

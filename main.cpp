@@ -3,11 +3,12 @@
 #include "src/GameManager.h"
 
 
-const std::string commands[5] = {
+const std::string commands[6] = {
         "--size",
         "-random",
         "--file",
         "-gfx",
+        "-gfx2",
         "--res"
 };
 
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
     unsigned int size = 100;
     std::string filePath;
     bool withGfx = false;
+    bool withShaders = false;
     unsigned int resolution = 1000;
 
     if (argc==1) {
@@ -44,6 +46,10 @@ int main(int argc, char *argv[]) {
             withGfx = true;
         }
         if (argv[i] == commands[4]) {
+            std::cout << "Running with OpenGL + Shaders. " << std::endl;
+            withShaders = true;
+        }
+        if (argv[i] == commands[5]) {
             std::istringstream iss( argv[i+1] );
             iss >> resolution;
             std::cout << "Setting resolution to: " << resolution << std::endl;
@@ -57,7 +63,14 @@ int main(int argc, char *argv[]) {
     }
 
     try {
-        auto *gameManager = new GameManager(size, random, filePath, withGfx, resolution);
+        auto *gameManager = new GameManager(
+                size,
+                random,
+                filePath,
+                withGfx,
+                withShaders,
+                resolution
+            );
         gameManager->start();
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;

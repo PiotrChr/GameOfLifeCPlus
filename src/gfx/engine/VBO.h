@@ -5,7 +5,7 @@
 #ifndef GAMEOFLIFECPLUS_VBO_H
 #define GAMEOFLIFECPLUS_VBO_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 class VBO {
 public:

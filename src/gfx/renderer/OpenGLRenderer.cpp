@@ -19,45 +19,12 @@ OpenGLRenderer::OpenGLRenderer(unsigned int _resolution, Game* _game) {
     game = _game;
 }
 
-void OpenGLRenderer::initOpenGL() {
-    if(!glfwInit()){
-        throw std::runtime_error("Failed to init GLFW");
-    }
-
-    // Tell GLFW what version of OpenGL we are using
-    // In this case we are using OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    // Tell GLFW we are using the CORE profile
-    // So that means we only have the modern functions
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // Important for Mac os
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-}
-
 int OpenGLRenderer::init(unsigned int _size) {
     size = _size;
     cellSize = 2.0f / float(size);
-    GLsizei width;
-    GLsizei height;
-    // Initialize GLFW
-    initOpenGL();
 
-    window = glfwCreateWindow(resolution, resolution, "Game of life", NULL, NULL);
-
-    // Error check if the window fails to create
-    if (window == nullptr) {
-        glfwTerminate();
-        throw std::runtime_error("Failed to crate a window");
-    }
-    glfwGetFramebufferSize(window, &width, &height);
-    // Introduce the window into the current context
-    glfwMakeContextCurrent(window);
-    //Load GLAD so it configures OpenGL
-    gladLoadGL();
-    // Specify the viewport of OpenGL in the Window
-    glViewport(0, 0, width, height);
+    EngineManager::initEngine();
+    GLFWwindow* window = EngineManager::createWindow(resolution, resolution, "Game of Life");
 
     grid = prepareGrid();
 
@@ -65,14 +32,11 @@ int OpenGLRenderer::init(unsigned int _size) {
     Shader shaderProgram("default.vert", "default.frag");
     shaderProgram.activate();
 
-    while(!glfwWindowShouldClose(window)) {
+    while(EngineManager::shouldClose(window)) {
         game->update();
         state = game->getState();
-        // Specify the color of the background
-        glClearColor(0, 0, 0, 1);
-        // Clean the back buffer and assign the new color to it
-        glClear(GL_COLOR_BUFFER_BIT);
-        // Tell OpenGL which Shader Program we want to use
+
+        EngineManager::clearBg(0, 0, 0, 1);
 
         // Draw all the living cells
         for (unsigned int col=0; col<size; col++) {
@@ -83,14 +47,7 @@ int OpenGLRenderer::init(unsigned int _size) {
             }
         }
 
-//        grid[size-1][size-1]->draw();
-//
-//        grid[size-1][size-3]->draw();
-
-        // Take care of all GLFW events
-        glfwPollEvents();
-        // Swap the back buffer with the front buffer
-        glfwSwapBuffers(window);
+        EngineManager::clearAndSwap(window);
     }
 
     for (unsigned int col=0; col<size; col++) {
@@ -167,11 +124,9 @@ std::vector<std::vector<Cell*>> OpenGLRenderer::prepareGrid() {
 }
 
 OpenGLRenderer::~OpenGLRenderer() {
-    // Delete window before ending the program
-    glfwDestroyWindow(window);
-    // Terminate GLFW before ending the program
-    glfwTerminate();
+    EngineManager::destroy(window);
 }
+
 void OpenGLRenderer::renderState(std::vector<std::vector<bool>> _state) {
     state = _state;
 }

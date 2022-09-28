@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Renderer.h"
-#include "../Game.h"
+#include "../../Game.h"
 
 #ifndef GAMEOFLIFECPLUS_TERMINALRENDERER_H
 #define GAMEOFLIFECPLUS_TERMINALRENDERER_H

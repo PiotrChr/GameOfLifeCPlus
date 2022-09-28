@@ -3,7 +3,14 @@
 //
 #include "GameManager.h"
 
-GameManager::GameManager(unsigned int _size, bool random, const std::string& filePath, bool withGfx, unsigned int resolution) {
+GameManager::GameManager(
+        unsigned int _size,
+        bool random,
+        const std::string& filePath,
+        bool withGfx,
+        bool withShaders,
+        unsigned int resolution
+) {
     size = _size;
 
     std::vector<std::vector<bool>> initialGameState;
@@ -16,6 +23,8 @@ GameManager::GameManager(unsigned int _size, bool random, const std::string& fil
 
     if (withGfx) {
         renderer = new OpenGLRenderer(resolution, game);
+    } else if (withShaders) {
+        renderer = new OpenGLShaderRenderer(resolution, game);
     } else {
         renderer = new TerminalRenderer(game);
     }

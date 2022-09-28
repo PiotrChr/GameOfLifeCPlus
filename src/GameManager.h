@@ -8,9 +8,10 @@
 #include <thread>
 #include <stdexcept>
 #include "Game.h"
-#include "gfx/Renderer.h"
-#include "gfx/TerminalRenderer.h"
-#include "gfx/OpenGLRenderer.h"
+#include "gfx/renderer/Renderer.h"
+#include "gfx/renderer/TerminalRenderer.h"
+#include "gfx/renderer/OpenGLRenderer.h"
+#include "gfx/renderer/OpenGLShaderRenderer.h"
 
 #define DENSITY 20
 #define DEFAULT_DELAY 50
@@ -24,7 +25,14 @@ private:
     Game *game;
     Renderer *renderer;
 public:
-    GameManager(unsigned int _size, bool _random, const std::string& _filePath, bool withGfx, unsigned int resolution);
+    GameManager(
+        unsigned int _size,
+        bool _random,
+        const std::string& _filePath,
+        bool withGfx,
+        bool withShaders,
+        unsigned int resolution
+    );
     void start();
     void generate_random(std::vector<std::vector<bool>> &initialGameState);
 };

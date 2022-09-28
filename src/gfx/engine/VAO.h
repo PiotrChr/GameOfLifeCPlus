@@ -5,7 +5,7 @@
 #ifndef GAMEOFLIFECPLUS_VAO_H
 #define GAMEOFLIFECPLUS_VAO_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include "VBO.h"
 
 class VAO {

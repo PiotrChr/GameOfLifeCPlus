@@ -5,7 +5,7 @@
 #ifndef GAMEOFLIFECPLUS_EBO_H
 #define GAMEOFLIFECPLUS_EBO_H
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 class EBO {
 public:
