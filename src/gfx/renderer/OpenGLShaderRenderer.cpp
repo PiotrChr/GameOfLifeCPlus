@@ -53,8 +53,8 @@ int OpenGLShaderRenderer::init(unsigned int _size) {
     //So let's create a new sf::Image first and fill it with data.
     auto *initState = new sf::Image;
     initState->create(resolution,resolution);
-    for(uint y=0; y<resolution; y++)
-        for(uint x=0; x<resolution; x++)
+    for(unsigned int y=0; y<resolution; y++)
+        for(unsigned int x=0; x<resolution; x++)
         {
             unsigned char color=(rand()%2)*255;
             initState->setPixel(x,y,sf::Color(color,color,color,255));
@@ -73,11 +73,11 @@ int OpenGLShaderRenderer::init(unsigned int _size) {
 
     //load and compile neccesary shaders, also init the uniforms in the shaders
     sf::Shader shader;
-    shader.loadFromFile("vertex.glsl","fragment.glsl");
+    shader.loadFromFile("gof.vert","gof.frag");
     shader.setUniform("resolution",float(resolution));
 
     sf::Shader dispShader;
-    dispShader.loadFromFile("vertex.glsl","display_fragment.glsl");
+    dispShader.loadFromFile("gof.vert","gof_display.frag");
     dispShader.setUniform("zoom",zoom);
 
     //create some states, so SFML can bind shaders and Texture to OpenGL

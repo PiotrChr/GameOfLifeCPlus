@@ -15,6 +15,7 @@ int TerminalRenderer::init(unsigned int _size) {
     while(true) {
         game->update();
         renderState(game->getState());
+        
     }
 }
 
