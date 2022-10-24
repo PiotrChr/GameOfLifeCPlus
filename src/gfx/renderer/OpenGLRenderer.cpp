@@ -29,7 +29,7 @@ int OpenGLRenderer::init(unsigned int _size) {
     grid = prepareGrid();
 
     // Generates Shader object using shaders default.vert and default.frag
-    Shader shaderProgram("default.vert", "default.frag");
+    Shader shaderProgram("res/default.vert", "res/default.frag");
     shaderProgram.activate();
 
     while(EngineManager::shouldClose(window)) {

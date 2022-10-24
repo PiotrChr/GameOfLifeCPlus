@@ -10,10 +10,6 @@ find_package(OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 
-# if (NOT SFML)
-#     message(FATAL_ERROR "SFML not found")
-# endif()
-
 include_directories("includes")
 
 add_executable(
@@ -44,8 +40,6 @@ add_executable(
     resources/shaders/gof.vert
     resources/shaders/gof_display.frag
     src/gfx/renderer/OpenGLShaderRenderer.cpp
-    src/gfx/renderer/gof.frag
-    src/gfx/renderer/gof.vert
     src/gfx/renderer/OpenGLShaderRenderer.h
     src/gfx/engine/EngineManager.cpp
     src/gfx/engine/EngineManager.h
@@ -55,6 +49,11 @@ target_link_libraries(GameOfLifeCplus glfw)
 target_link_libraries(GameOfLifeCplus OpenGL::GL)
 target_link_libraries(GameOfLifeCplus "-framework sfml-graphics -framework sfml-system -framework sfml-window")
 
+configure_file(resources/shaders/default.frag res/default.frag COPYONLY)
+configure_file(resources/shaders/default.vert res/default.vert COPYONLY)
+configure_file(resources/shaders/gof.vert res/gof.vert COPYONLY)
+configure_file(resources/shaders/gof.frag res/gof.frag COPYONLY)
+configure_file(resources/shaders/gof_display.frag res/gof_display.frag COPYONLY)
 
 set(RESOURCE_FILES
     resources/shaders/default.frag
@@ -68,8 +67,8 @@ set(RESOURCE_FILES
 set_target_properties(GameOfLifeCplus PROPERTIES LINK_FLAGS "-Wl,-F/Library/Frameworks")
 
 set_target_properties(GameOfLifeCplus PROPERTIES
-        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE FALSE
         MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget
-        RESOURCE "${RESOURCE_FILES}")
+        )
 
 #target_link_libraries(GameOfLifeCplus "/usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.3.dylib")

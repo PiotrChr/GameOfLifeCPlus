@@ -73,11 +73,11 @@ int OpenGLShaderRenderer::init(unsigned int _size) {
 
     //load and compile neccesary shaders, also init the uniforms in the shaders
     sf::Shader shader;
-    shader.loadFromFile("gof.vert","gof.frag");
+    shader.loadFromFile("res/gof.vert","res/gof.frag");
     shader.setUniform("resolution",float(resolution));
 
     sf::Shader dispShader;
-    dispShader.loadFromFile("gof.vert","gof_display.frag");
+    dispShader.loadFromFile("res/gof.vert","res/gof_display.frag");
     dispShader.setUniform("zoom",zoom);
 
     //create some states, so SFML can bind shaders and Texture to OpenGL
